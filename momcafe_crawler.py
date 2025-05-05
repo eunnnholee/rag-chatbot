@@ -63,7 +63,7 @@ class MomcafeCrawler:
         # 키워드 입력
         try:
             engine = self.driver.find_element(By.XPATH, '//*[@id="cafe_content"]/div[5]/div[2]/div[3]/input')
-            engine.click()
+            engine.click()                                  
             engine.send_keys(keyword)
             engine.send_keys(Keys.ENTER)
             print('[ENTER] 검색어 입력 완료')
@@ -76,8 +76,8 @@ class MomcafeCrawler:
             print(f"[{board_name}] {page} 페이지 크롤링 중...")
             for i in range(1, 16):  # 게시글 개수
                 try:
-                    post = self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[3]/table/tbody[2]/tr[{i}]/td[2]/div/div/a[1]').get_attribute('href')
-                    self.driver.get(post)
+                    post = self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[4]/table/tbody/tr[{i}]/td[2]/div/div/a[1]').get_attribute('href')
+                    self.driver.get(post)                      
                     time.sleep(2)
 
                     self.driver.switch_to.default_content()
@@ -91,16 +91,15 @@ class MomcafeCrawler:
                     titles.append(title)
 
                     try:
-                        detail = self.driver.find_element(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/div[1]/div[2]/div[1]').text
+                        detail = self.driver.find_element(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/div[1]/div/div[2]').text
                     except:
-                        detail = self.driver.find_element(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/div[1]/div/div[1]').text
-
+                        print('Fail accept details')
                     print('내용: ' + detail)
                     details.append(detail)
 
                     time.sleep(1)
                     self.driver.back()
-                    print('finish one post')
+                    print('Finish one post')
 
                 except Exception as e:
                     print(f"오류 발생: {e}")
@@ -111,14 +110,14 @@ class MomcafeCrawler:
             if page < pages:
                 if page<=10:
                     if page%10 != 0:
-                        self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[5]/div[1]/button[{page%10+1}]').click()
+                        self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[6]/div[1]/button[{page%10+1}]').click()
                     else:
-                        self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[5]/div[1]/button[11]').click()
+                        self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[6]/div[1]/button[11]').click()
                 else:
                     if page%10 != 0:
-                        self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[5]/div[1]/button[{page%10+2}]').click()
+                        self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[6]/div[1]/button[{page%10+2}]').click()
                     else:
-                        self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[5]/div[1]/button[12]').click()
+                        self.driver.find_element(By.XPATH, f'//*[@id="cafe_content"]/div[6]/div[1]/button[12]').click()
         return titles, details
     
     def close(self):
@@ -134,19 +133,22 @@ if __name__ == "__main__":
     crawler.manual_login()
 
     boards = [
-        ("직장맘 수다방", '//*[@id="menuLink135"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 101),
-        ("임신중 질문방", '//*[@id="menuLink392"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 61),
-        ("육아 질문방",   '//*[@id="menuLink126"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 16),
-        ("자유 수다방",   '//*[@id="menuLink179"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 101),
+        ("직장맘 수다방", '//*[@id="menuLink135"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 90),
+        ("임신중 질문방", '//*[@id="menuLink392"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 60),
+        ("육아 질문방",   '//*[@id="menuLink126"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 20),
+        ("자유 수다방",   '//*[@id="menuLink179"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 90),
     ]
 
-    for name, board_xpath, post_xpath, page_cnt in boards:
-        titles, details = crawler.crawl_board(name, board_xpath, post_xpath, page_cnt, keyword="육아휴직")
-        all_titles.extend(titles)
-        all_details.extend(details)
-
-    df = pd.DataFrame({'title': all_titles, 'detail': all_details, 'comment': })
-    df.to_csv("/results/navercafe_results.csv", index=False, encoding="utf-8-sig")
-    print(f"크롤링 완료: 총 {len(df)}건 저장됨")
-
-    crawler.close()
+    try:
+        for name, board_xpath, post_xpath, page_cnt in boards:
+            titles, details = crawler.crawl_board(
+                name, board_xpath, post_xpath, page_cnt, keyword="육아휴직")
+            all_titles.extend(titles)
+            all_details.extend(details)
+    except Exception as e:
+        print(f"[ERROR] 전체 크롤링 도중 예외 발생: {e}")
+    finally:
+        df = pd.DataFrame({'title': all_titles, 'detail': all_details})
+        df.to_csv("navercafe_results_partial.csv", index=False, encoding="utf-8-sig")
+        print(f"[SAVE] 크롤링 중단 시점까지 저장 완료: 총 {len(df)}건")
+        crawler.close()
