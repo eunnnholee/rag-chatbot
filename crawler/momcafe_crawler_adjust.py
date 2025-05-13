@@ -143,13 +143,11 @@ if __name__ == "__main__":
     crawler.manual_login()
 
     boards = [
-        ("임신중 질문방", '//*[@id="menuLink392"]',
-         '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 60),
-        ("육아 질문방",   '//*[@id="menuLink126"]',
-         '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 20),
-        ("자유 수다방",   '//*[@id="menuLink179"]',
-         '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 90),
-    ]
+        ("임신중 질문방", '//*[@id="menuLink392"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 60),
+        ("육아 질문방", '//*[@id="menuLink126"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 20),
+        ("자유 수다방", '//*[@id="menuLink179"]', '//*[@id="main-area"]/div[5]/table/tbody/tr[*]/td[1]/div[2]/div/a', 90),
+        ]
+    
 
     try:
         for name, board_xpath, post_xpath, page_cnt in boards:
@@ -168,7 +166,6 @@ if __name__ == "__main__":
         print(f"[ERROR] 전체 크롤링 도중 예외 발생: {e}")
     finally:
         df = pd.DataFrame({'title': all_titles, 'detail': all_details})
-        df.to_csv("navercafe_results_partial2.csv",
-                  index=False, encoding="utf-8-sig")
+        df.to_csv("navercafe_results_partial2.csv", index=False, encoding="utf-8-sig")
         print(f"[SAVE] 크롤링 중단 시점까지 저장 완료: 총 {len(df)}건")
         crawler.close()
