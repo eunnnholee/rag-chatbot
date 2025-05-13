@@ -1,0 +1,31 @@
+[project]
+name = "rag-chatbot"
+version = "0.1.0"
+description = "RAG-based Chatbot Project"
+authors = [
+    {name = "Sangjin"}
+]
+readme = "README.md"
+requires-python = "^3.12"
+dependencies = [
+    "jupyter (>=1.1.1,<2.0.0)",
+    "ipykernel (>=6.29.5,<7.0.0)",
+    "ipython-autotime (>=0.3.2,<0.4.0)",
+    "langchain-community (>=0.3.22,<0.4.0)",
+    "pypdf (>=5.4.0,<6.0.0)",
+    "langchain-chroma (>=0.2.3,<0.3.0)",
+    "gradio (>=5.27.0,<6.0.0)",
+    "langchain-agentql (>=1.0.1,<2.0.0)",
+    "langgraph (>=0.4.3,<0.5.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+ipython-autotime = "^0.3.2"
+black = "^25.1.0"
+isort = "^6.0.1"
+
