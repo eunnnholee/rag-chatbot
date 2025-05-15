@@ -1,0 +1,22 @@
+s3:
+  bucket_name: "your-s3-bucket-name"   # S3 버킷 이름을 입력하세요
+  folder_name: "uploaded_images"        # S3 내 업로드 폴더명
+
+local:
+  image_folder: "./cropped_images"      # 로컬 이미지 폴더 경로
+
+aws:
+  region: "ap-northeast-2"              # AWS 리전 코드
+
+cache:
+  url_cache_file: "image_url_cache.json"      # 이미지 URL 캐시 파일명
+  summary_cache_file: "summary_cache.json"    # 요약 캐시 파일명
+
+output:
+  summary_dir: "summaries"               # 요약 결과 저장 폴더
+
+image:
+  max_size: 1024  # 최대 이미지 크기 (픽셀)
+
+api:
+  batch_size: 5   # API 호출 배치 크기 

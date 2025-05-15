@@ -36,4 +36,5 @@ opencv-python = "^4.11.0.86"
 matplotlib = "^3.10.3"
 pytesseract = "^0.3.13"
 easyocr = "^1.7.2"
+boto3 = "^1.38.16"
 
