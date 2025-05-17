@@ -4,6 +4,8 @@ s3:
 
 local:
   image_folder: "./cropped_images"      # 로컬 이미지 폴더 경로
+  policy_dir: "./data/policy"          # 로컬 policy 폴더 경로
+  persist_dir: "./chroma_db"            # Chroma DB 폴더 경로
 
 aws:
   region: "ap-northeast-2"              # AWS 리전 코드
@@ -11,12 +13,10 @@ aws:
 cache:
   url_cache_file: "image_url_cache.json"      # 이미지 URL 캐시 파일명
   summary_cache_file: "summary_cache.json"    # 요약 캐시 파일명
+  progress_file: "processing_progress.json"   # 진행 상황 기록
 
 output:
   summary_dir: "summaries"               # 요약 결과 저장 폴더
 
 image:
   max_size: 1024  # 최대 이미지 크기 (픽셀)
-
-api:
-  batch_size: 5   # API 호출 배치 크기 

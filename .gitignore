@@ -207,6 +207,7 @@ cropped_images/
 
 # cache files
 image_url_cache.json
+processing_progress.json
 summaries/
 
 config.yaml
